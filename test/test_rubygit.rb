@@ -153,6 +153,12 @@ class TestRubyGit < Test::Unit::TestCase
     assert_equal out, fixture('rev_list_since_until')
   end
 
+  def test_rev_list_raw_since_ducktype
+    since_time = @git.rev_list({:since => Time.at(1204644738)}, 'master')
+    since_duck = @git.rev_list({:since => DuckTime.new(Time.at(1204644738))}, 'master')
+    assert_equal since_time, since_duck
+  end
+
   def test_rev_list_pretty_raw
     out = @git.rev_list({:pretty => 'raw'}, 'f1964ad1919180dd1d9eae9d21a1a1f68ac60e77')
     assert_match 'f1964ad1919180dd1d9eae9d21a1a1f68ac60e77', out
